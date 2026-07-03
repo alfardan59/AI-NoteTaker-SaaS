@@ -14,24 +14,24 @@ model User {
   name     String?
   meetings Meeting[]
 
-  botName     String  @default("Meeting Bot")
+  botName     String? @default("Meeting Bot")
   botImageUrl String?
 
   googleAccessToken  String?
   googleRefreshToken String?
   googleTokenExpiry  DateTime?
-  calendarConnected  Boolean   @default(false)
+  calendarConnected  Boolean @default(false)
 
   slackUserId          String?
   slackTeamId          String?
   slackConnected       Boolean @default(false)
-  preferredChannelId   String
+  preferredChannelId   String?
   preferredChannelName String?
 
-  currentPlan          String    @default("Free")
+  currentPlan          String    @default("free")
   subscriptionStatus   String    @default("inactive")
   stripeCustomerId     String?
-  stripeSubscriptionID String?
+  stripeSubscriptionId String?
   billingPeriodStart   DateTime?
   meetingsThisMonth    Int       @default(0)
   chatMessagesToday    Int       @default(0)
@@ -46,8 +46,8 @@ model SlackInstallation {
   teamName      String
   botToken      String   @db.Text
   installedBy   String
-  installername String?
-  activate      Boolean  @default(true)
+  installerName String?
+  active        Boolean  @default(true)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
@@ -63,7 +63,7 @@ model Meeting {
   attendees   Json?
 
   calendarEventId String? @unique
-  isFromcalendar  Boolean @default(false)
+  isFromCalendar  Boolean @default(false)
 
   botScheduled Boolean   @default(true)
   botSent      Boolean   @default(false)
@@ -73,7 +73,7 @@ model Meeting {
   meetingEnded    Boolean @default(false)
   transcriptReady Boolean @default(false)
   transcript      Json?
-  recordinUrl     String?
+  recordingUrl    String?
   speakers        Json?
 
   summary        String?
@@ -85,7 +85,7 @@ model Meeting {
   ragProcessed   Boolean   @default(false)
   ragProcessedAt DateTime?
 
-  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
@@ -96,12 +96,12 @@ model UserIntegration {
   id           String    @id @default(cuid())
   userId       String
   platform     String
-  acessToken   String    @db.Text
+  accessToken  String    @db.Text
   refreshToken String?   @db.Text
   expiresAt    DateTime?
 
   boardId     String?
-  boardname   String?
+  boardName   String?
   projectId   String?
   projectName String?
   workspaceId String?
@@ -121,5 +121,6 @@ model TranscriptChunk {
   speakerName String?
   vectorId    String?
   createdAt   DateTime @default(now())
-  Meeting     Meeting  @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+
+  meeting Meeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
 }
