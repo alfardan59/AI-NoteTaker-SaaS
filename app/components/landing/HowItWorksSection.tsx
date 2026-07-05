@@ -1,5 +1,3 @@
-
-
 function HowItWorksSection() {
   return (
     <section className="py-20 bg-black">
