@@ -4,6 +4,7 @@ import FeaturesSection from "./components/landing/FeaturesSection";
 import IntegrationsSection from "./components/landing/IntegrationsSection";
 import HowItWorksSection from "./components/landing/HowItWorksSection";
 import StatsSection from "./components/landing/StatsSection";
+import MoreFeaturesSection from "./components/landing/MoreFeaturesSection";
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
       <IntegrationsSection />
       <HowItWorksSection />
       <StatsSection />
+      <MoreFeaturesSection />
     </div>
   );
 }
