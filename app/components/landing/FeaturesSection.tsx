@@ -58,6 +58,21 @@ function FeaturesSection() {
                 From AI Summaries to seamless Integrations, We've got every aspects covered.
             </p>
         </div>
+        <div  className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {features.map((feature,index)=>(
+                <div key={index} className="bg-gray-900/50 border border-gray-800 rounded-xl p-6 hover:bg-gray-900/70 hover:border-gray-700 transition-all">
+                    <div className={`w-12 h-12 ${feature.bgColor} rounded-lg flex items-center justify-center mb-4`}>
+                        <feature.icon className={`w-6 h-6 ${feature.color}`}/>
+                    </div>
+                    <h3 className="text-xl font-semibold text-white mb-2">
+                        {feature.title}
+                    </h3>
+                    <p className="text-gray-400">
+                        {feature.description}
+                    </p>
+                </div>
+            ))}
+        </div>
       </div>
     </section>
   )
