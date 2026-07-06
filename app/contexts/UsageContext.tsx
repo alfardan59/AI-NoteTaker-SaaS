@@ -55,5 +55,44 @@ export function UsageProvider({children}:{children:ReactNode}){
         (limits.meetings === -1 || usage.meetingsThisMonth < limits.meetings)
     ): false
 
-    const fetchUsage
+    const fetchUsage = async()=>{
+        if(!userId) return
+
+        try {
+            const response = await fetch('/api/user/usage')
+            if(response.ok){
+                const data = await response.json()
+                setUsage(data)
+            }
+        } catch (error) {
+            console.error("failed to fetch usage", error);
+        } finally {
+            setLoading(false)
+        }
+    }
+    const incrementChatUsage = async()=>{
+        if(!canChat){
+            return
+        }
+
+        try {
+            const response = await fetch('api/user/increment',{
+                method: 'POST',
+                headers:{ 'Content-type': 'application/json'}
+            })
+            if(response.ok){
+                setUsage(prev=>prev ? {
+                    ...prev,
+                    chatMessagesToday: prev.chatMessagesToday + 1
+                } : null)
+            } else{
+                const data = await response.json()
+                if(data.upgradeRequired){
+                    console.log(data.error)
+                }
+            }
+        } catch (error) {
+            console.error('Failed to increment chat Usage', error)
+        }
+    }
 }
