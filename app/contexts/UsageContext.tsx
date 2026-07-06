@@ -3,8 +3,6 @@
 import { useAuth } from "@clerk/nextjs"
 import { createContext, ReactNode, useState } from "react"
 
-
-
 interface PlanLimits{
     meetings: number
     chatMessages: number
@@ -44,4 +42,18 @@ export function UsageProvider({children}:{children:ReactNode}){
     const [loading, setLoading] = useState(true)
 
     const limits = usage? PLAN_LIMITS[usage.currentPlan] || PLAN_LIMITS.free : PLAN_LIMITS.free
+
+    const canChat = usage?(
+        usage.currentPlan !== 'free' &&
+        usage.subscriptionStatus === 'active' &&
+        (limits.chatMessages === -1 || usage.chatMessagesToday < limits.chatMessages)
+    ): false
+
+    const canScheduleMeeting = usage?(
+        usage.currentPlan !== 'free' &&
+        usage.subscriptionStatus === 'active' &&
+        (limits.meetings === -1 || usage.meetingsThisMonth < limits.meetings)
+    ): false
+
+    const fetchUsage
 }
