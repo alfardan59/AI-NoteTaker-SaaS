@@ -65,3 +65,7 @@ export async function incrementChatUsage(userId:string){
         }
     })
 }
+
+export function getPlanLimits(plan:string){
+    return PLAN_LIMITS[plan] || PLAN_LIMITS.free
+}
