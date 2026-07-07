@@ -36,4 +36,19 @@ export async function canUserChat(userId:string){
     if(limits.chatMessages !== -1 && user.chatMessagesToday>=limits.chatMessages){
         return {allowed: false, reason : `You've reached your daily limits of ${limits.chatMessages} messages`}
     }
+
+    return {allowed: true}
+}
+
+export async function incrementMeetingUsage(userId:string){
+    await prisma.user.update({
+        where:{
+            id:userId
+        },
+        data:{
+            meetingsThisMonth:{
+                increment:1
+            }
+        }
+    })
 }
