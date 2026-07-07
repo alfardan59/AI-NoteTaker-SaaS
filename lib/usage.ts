@@ -52,3 +52,16 @@ export async function incrementMeetingUsage(userId:string){
         }
     })
 }
+
+export async function incrementChatUsage(userId:string){
+    await prisma.user.update({
+        where:{
+            id:userId
+        },
+        data:{
+            chatMessagesToday:{
+                increment:1
+            }
+        }
+    })
+}
