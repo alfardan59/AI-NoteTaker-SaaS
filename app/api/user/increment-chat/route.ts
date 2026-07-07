@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/db";
+import { canUserChat, incrementChatUsage } from "@/lib/usage";
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -25,7 +26,18 @@ export async function POST(request:NextRequest){
         }
 
         const chatCheck = await canUserChat(user.id)
+
+        if(!chatCheck.allowed){
+            return NextResponse.json({
+                error: chatCheck.reason,
+                upgradeRequired : true
+            },{status:403})
+        }
+
+        await incrementChatUsage(user.id)
+
+        return NextResponse.json({success: true})
     } catch (error) {
-        
+        return NextResponse.json({error:"failed to increase usage"},{status:500})
     }
 }
