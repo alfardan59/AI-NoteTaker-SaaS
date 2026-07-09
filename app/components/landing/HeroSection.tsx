@@ -29,8 +29,12 @@ export default function HeroSection() {
             </div>
             <div className="flex items-center gap-4">
               {isSignedIn ? (
-                <Button asChild className="bg-blue-600 hover:bg-blue-700">
-                  <Link href="/home">Dashboard</Link>
+                <Button
+                  render={<Link href="/home" />}
+                  nativeButton={false}
+                  className="bg-blue-600 hover:bg-blue-700"
+                >
+                  Dashboard
                 </Button>
               ) : (
                 <>
@@ -90,14 +94,13 @@ export default function HeroSection() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
             {isSignedIn ? (
               <Button
-                asChild
+                render={<Link href="/home" className="group" />}
+                nativeButton={false}
                 size="lg"
                 className="bg-blue-600 hover:bg-blue-700 px-8 py-4"
               >
-                <Link href="/home" className="group">
-                  <span>Dashboard</span>
-                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                </Link>
+                <span>Dashboard</span>
+                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
             ) : (
               <SignUpButton mode="modal">

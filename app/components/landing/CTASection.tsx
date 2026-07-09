@@ -21,14 +21,13 @@ function CTASection() {
         </p>
         {isSignedIn ? (
           <Button
-            asChild
+            render={<Link href="/home" className="group" />}
+            nativeButton={false}
             size="lg"
             className="bg-blue-600 hover:bg-blue-700 px-8 py-4"
           >
-            <Link href="/home" className="group">
-              <span>Dashboard</span>
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Link>
+            <span>Dashboard</span>
+            <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
           </Button>
         ) : (
           <SignUpButton>
