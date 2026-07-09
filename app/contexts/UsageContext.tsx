@@ -49,11 +49,11 @@ export function UsageProvider({children}:{children:ReactNode}){
         (limits.chatMessages === -1 || usage.chatMessagesToday < limits.chatMessages)
     ): false
 
-    const canScheduleMeeting = usage?(
+     const canScheduleMeeting = usage ? (
         usage.currentPlan !== 'free' &&
         usage.subscriptionStatus === 'active' &&
         (limits.meetings === -1 || usage.meetingsThisMonth < limits.meetings)
-    ): false
+    ) : false
 
     const fetchUsage = async()=>{
         if(!userId) return
@@ -95,4 +95,28 @@ export function UsageProvider({children}:{children:ReactNode}){
             console.error('Failed to increment chat Usage', error)
         }
     }
+    
+    const incrementMeetingUsage = async()=>{
+        if(!canScheduleMeeting){
+            return
+        }
+        try {
+            const response = await fetch('/api/user/increment-meeting',{
+                method:'POST',
+                headers:{'Content-Type' : "application/json"}
+            })
+
+            if(response.ok){
+                setUsage(prev=>prev ? {
+                    ...prev,
+                    meetingsThisMonth : prev.meetingsThisMonth+1
+                } : null)
+            }
+        } catch (error) {
+            console.error("Failed to increment usage:", error)
+        }
+    }
+
+    
 }
+
