@@ -1,7 +1,7 @@
 'use client'
 
 import { useAuth } from "@clerk/nextjs"
-import { createContext, ReactNode, useEffect, useState } from "react"
+import { createContext, ReactNode, useContext, useEffect, useState } from "react"
 
 interface PlanLimits{
     meetings: number
@@ -143,5 +143,14 @@ export function UsageProvider({children}:{children:ReactNode}){
             {children}
         </UsageContext.Provider>
     )
+}
+
+export function useUsage(){
+    const context = useContext(UsageContext)
+
+    if(context === undefined){
+        throw new Error("Usage must be defined")
+    }
+    return context
 }
 
