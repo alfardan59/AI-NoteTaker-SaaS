@@ -48,14 +48,10 @@ export function AppSidebar() {
   const { usage, limits } = useUsage();
 
   const meetingProgress =
-    usage && limits.meetings !== -1
-      ? Math.min((usage.meetingsThisMonth / limits.meetings) * 100, 100)
-      : 0;
+    usage && limits.meetings !== -1 ? Math.min((usage.meetingsThisMonth / limits.meetings) * 100, 100) : 0;
 
   const chatProgress =
-    usage && limits.chatMessages !== -1
-      ? Math.min((usage.chatMessagesToday / limits.chatMessages) * 100, 100)
-      : 0;
+    usage && limits.chatMessages !== -1 ? Math.min((usage.chatMessagesToday / limits.chatMessages) * 100, 100) : 0;
 
   const getUpgradeInfo = () => {
     if (!usage) return null;
