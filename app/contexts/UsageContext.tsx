@@ -1,7 +1,7 @@
 'use client'
 
 import { useAuth } from "@clerk/nextjs"
-import { createContext, ReactNode, useState } from "react"
+import { createContext, ReactNode, useEffect, useState } from "react"
 
 interface PlanLimits{
     meetings: number
@@ -117,6 +117,31 @@ export function UsageProvider({children}:{children:ReactNode}){
         }
     }
 
-    
+    const refreshUsage = async ()=>{
+        await fetchUsage()
+    }
+
+    useEffect(()=>{
+        if(isLoaded && userId){
+            fetchUsage()
+        } else if(isLoaded && !userId){
+            setLoading(false)
+        }
+    },[userId, isLoaded])
+
+    return(
+        <UsageContext.Provider value={{
+            usage,
+            loading,
+            canChat,
+            canScheduleMeeting,
+            limits,
+            incrementChatUsage,
+            incrementMeetingUsage,
+            refreshUsage
+        }}>
+            {children}
+        </UsageContext.Provider>
+    )
 }
 
