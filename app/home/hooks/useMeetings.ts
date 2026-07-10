@@ -154,4 +154,20 @@ export function useMeetings(){
             setLoading(false)
         }
     }
+
+    const getAttendeeList = (attendees :any):string[] =>{
+        if(!attendees){
+            return []
+        }
+        try {
+            const parsed = JSON.parse(String(attendees))
+            if(Array.isArray(parsed)){
+                return parsed.map(name=> String(name).trim())
+            }
+            return [String(parsed.trim())]
+        } catch (error) {
+            const attendeesString = String(attendees)
+            return attendeesString.split(',').map(name=>name.trim()).filter(Boolean)
+        }
+    }
 }
