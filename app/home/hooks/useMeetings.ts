@@ -144,4 +144,14 @@ export function useMeetings(){
             }))
         }    
     }
+
+    const directOAuth = async()=>{
+        setLoading(true)
+        try {
+            window.location.href = '/api/auth/google/direct-connect'
+        } catch (error) {
+            setError('failed to start direct OAuth')
+            setLoading(false)
+        }
+    }
 }
