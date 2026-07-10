@@ -45,7 +45,7 @@ export function useMeetings(){
     useEffect(()=>{
         if(userId){
             fetchUpComingEvents()
-            
+            fetchPastmeetings()
         }
     },[userId])
 
@@ -90,5 +90,26 @@ export function useMeetings(){
         }
         setLoading(false)
         setInitialLoading(false)
+    }
+
+    const fetchPastmeetings = async()=>{
+        setPastLoading(true)
+        try {
+            const response = await fetch('/api/meetings/past')
+            const result = await response.json()
+
+            if(!response.ok){
+                console.error('Failed to fetch past Meetings:', result.error)
+                return
+            }
+
+            if(result.error){
+                return
+            }
+            setPastMeetings(result.meetings as PastMeeting[])
+        } catch (error) {
+            console.error('Failed to fetch past Meetings:', error)
+        }
+        setPastLoading(false)
     }
 }
