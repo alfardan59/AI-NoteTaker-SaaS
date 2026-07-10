@@ -33,13 +33,13 @@ export function useMeetings(){
 
     const {userId}=useAuth()
 
-    const [upcomingEvents, setUpcomingEvent]= useState<CalendarEvent[]>([])
+    const [upcomingEvents, setUpcomingEvents]= useState<CalendarEvent[]>([])
     const [pastMeetings, setPastMeetings] = useState<PastMeeting[]>([])
     const [loading, setLoading] = useState(false)
     const [pastLoading, setPastLoading] = useState(false)
-    const [connected, setConencted] = useState(false)
+    const [connected, setConnected] = useState(false)
     const [error, setError] = useState<string>("")
-    const [botToggles, setBotToggle] = useState<{[key:string]:boolean}>({})
+    const [botToggles, setBotToggles] = useState<{[key:string]:boolean}>({})
     const [initialLoading, setInitialLoading] = useState(true)
 
     useEffect(()=>{
@@ -55,8 +55,40 @@ export function useMeetings(){
 
         try {
             const statusResponse = await fetch('/api/user/calendar-status')
+            const statusData = await statusResponse.json()
+
+            if(!statusData.connected){
+                setConnected(false)
+                setUpcomingEvents([])
+                setError('calendar not connected for auto-sync. Connect to enable auto syncing.')
+                setLoading(false)
+                setInitialLoading(false)
+                return
+            }
+            const response = await fetch('/api/meetings/upcoming')
+            const result = await response.json()
+
+            if(!response.ok){
+                setError(result.error || 'Failed to fetch meetings')
+                setConnected(false)
+                setInitialLoading(false)
+                return
+            }
+
+            setUpcomingEvents(result.events as CalendarEvent[])
+            setConnected(result.connected)
+
+            const toggles:{[key:string]:boolean} = {}
+            result.events.forEach((event:CalendarEvent)=>{
+                toggles[event.id]=event.botScheduled ?? true
+            })
+
+            setBotToggles(toggles)
         } catch (error) {
-            
+            setError("Failed to fetch Calendar Events. Please try again later!")
+            setConnected(false)
         }
+        setLoading(false)
+        setInitialLoading(false)
     }
 }
