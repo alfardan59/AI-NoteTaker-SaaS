@@ -112,4 +112,36 @@ export function useMeetings(){
         }
         setPastLoading(false)
     }
+
+    const toggleBot = async (eventId:string)=>{
+        try {
+            const event = upcomingEvents.find(e => e.id === eventId)
+            if(!event?.meetingId){
+                return
+            }
+             setBotToggles(prev=>({
+                ...prev,
+                [eventId] : !prev[eventId]
+             }))
+
+             const response = await fetch(`/api/meetings/${event.meetingId}/bot-toggle`,{
+                method: 'POST',
+                headers: {'Content-Type' : 'application/json'},
+                body: JSON.stringify({
+                    botScheduled: !botToggles[eventId]
+                })
+             })
+             if(!response.ok){
+                setBotToggles(prev => ({
+                    ...prev,
+                    [eventId]:!prev[eventId]
+                }))
+             }
+        } catch (error) {    
+            setBotToggles(prev => ({
+                ...prev,
+                [eventId]:!prev[eventId]
+            }))
+        }    
+    }
 }
