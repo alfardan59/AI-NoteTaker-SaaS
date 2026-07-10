@@ -1,5 +1,5 @@
 import { useAuth } from "@clerk/nextjs"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export interface CalendarEvent{
     id: string
@@ -42,5 +42,21 @@ export function useMeetings(){
     const [botToggles, setBotToggle] = useState<{[key:string]:boolean}>({})
     const [initialLoading, setInitialLoading] = useState(true)
 
-    
+    useEffect(()=>{
+        if(userId){
+            fetchUpComingEvents()
+            
+        }
+    },[userId])
+
+    const fetchUpComingEvents = async ()=>{
+        setLoading(true)
+        setError('')
+
+        try {
+            const statusResponse = await fetch('/api/user/calendar-status')
+        } catch (error) {
+            
+        }
+    }
 }
