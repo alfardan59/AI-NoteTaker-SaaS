@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { CalendarEvent } from "../hooks/useMeetings";
+import { Switch } from "@/components/ui/switch";
 
 interface UpcomingMeetingProps{
     upcomingEvents: CalendarEvent[]
@@ -7,13 +8,13 @@ interface UpcomingMeetingProps{
     error:string
     loading:boolean 
     initialLoading : boolean
-    botToggle : {[key:string]:boolean}
+    botToggles : {[key:string]:boolean}
     onRefresh: ()=>void
     onToggleBot: (eventId:string)=>void
     onConnectCalendar:()=>void
 }
 function UpcomingMeetings({
-    upcomingEvents, connected, error, loading, initialLoading, botToggle, onRefresh, onToggleBot, onConnectCalendar
+    upcomingEvents, connected, error, loading, initialLoading, botToggles, onRefresh, onToggleBot, onConnectCalendar
 }:UpcomingMeetingProps){
     return(
         <div>
@@ -59,6 +60,13 @@ function UpcomingMeetings({
                     >
                         {loading ? 'Loading.....' : 'Refresh'}
                     </Button>
+                    {upcomingEvents.map((event)=>(
+                        <div key={event.id} className="bg-card rounded-lg p-3 border border-border hover:shadow-md transition-shadow relative">
+                            <div className="absolute top-3 right-3">
+                                <Switch checked={!!botToggles[event.id]}/>
+                            </div>
+                        </div>
+                    ))}
                 </div>
             )}
         </div>
