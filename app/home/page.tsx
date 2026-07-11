@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import React from "react";
 import { useMeetings } from "./hooks/useMeetings";
@@ -23,29 +23,40 @@ const page = () => {
     getInitials,
   } = useMeetings();
 
-  const router = useRouter()
-  const handleMeetingClick = (meetingId:string)=>{
-    router.push(`/meeting/${meetingId}`)
-  }
+  const router = useRouter();
+  const handleMeetingClick = (meetingId: string) => {
+    router.push(`/meeting/${meetingId}`);
+  };
 
-  if(!userId){
-    return(
+  if (!userId) {
+    return (
       <div className="flex items-center justify-center h-screen">
         Please SignIn
       </div>
-    )
+    );
   }
 
-  return <div className="min-h-screen bg-background">
-    <div className="flex gap-6">
-      <div className="flex-1">
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold text-foreground">Past Meetings</h2>
+  return (
+    <div className="min-h-screen bg-background">
+      <div className="flex gap-6">
+        <div className="flex-1">
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold text-foreground">
+              Past Meetings
+            </h2>
+          </div>
+          {/* Past Meetings component */}
         </div>
-        {/* Past Meetings component */}
+        <div className="w-px bg-border">
+          <div className="w-96">
+            <div className="sticky top-6">
+              {/* Upcoming Meeting components */}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>;
+  );
 };
 
 export default page;
