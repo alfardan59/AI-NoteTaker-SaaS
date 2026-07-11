@@ -42,8 +42,22 @@ function UpcomingMeetings({
                     <div className="w-12 h-12 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-3">📆</div>
                     <h3 className="font-semibold mb-2 text-foreground text-sm">Connect Calendar</h3>
                     <p className="text-muted-foreground mb-4 text-xs">Connect Google calendar to see upcoming meetings</p>
-                    <Button className='w-full px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 transition'>
+                    <Button onClick={onConnectCalendar} disabled={loading} className='w-full px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 transition-colors text-sm'>
                         {loading ? "Connecting" : "Connect Google Calendar"}
+                    </Button>
+                </div>
+            ):UpcomingMeetings.length===0? (
+                <div className="bg-card rounded-lg p-6 text-center border border-border">
+                    <h3 className="font-medium mb-2 text-foreground text-sm">No Upcoming Meetings</h3>
+                    <p className="text-muted-foreground text-sm">You Calendar is Clear</p>
+                </div>
+            ):(
+                <div className="space-y-3">
+                    <Button className='w-full px-3 py-2 bg-muted rounded-lg hover:bg-muted/80 disabled:opacity-50 transition-colors text-foreground text-sm mb-4'
+                    onClick={onRefresh}
+                    disabled={loading}
+                    >
+                        {loading ? 'Loading.....' : 'Refresh'}
                     </Button>
                 </div>
             )}
