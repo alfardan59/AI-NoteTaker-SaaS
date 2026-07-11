@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { CalendarEvent } from "../hooks/useMeetings";
 import { Switch } from "@/components/ui/switch";
+import { Clock } from "lucide-react";
+import { format } from 'date-fns'
 
 interface UpcomingMeetingProps{
     upcomingEvents: CalendarEvent[]
@@ -63,8 +65,31 @@ function UpcomingMeetings({
                     {upcomingEvents.map((event)=>(
                         <div key={event.id} className="bg-card rounded-lg p-3 border border-border hover:shadow-md transition-shadow relative">
                             <div className="absolute top-3 right-3">
-                                <Switch checked={!!botToggles[event.id]}/>
+                                <Switch 
+                                    checked={!!botToggles[event.id]}
+                                    onCheckedChange={()=>onToggleBot(event.id)}
+                                    aria-label="Toggle bot for this meeting"
+                                />
                             </div>
+                            <h4 className="font-medium text-sm text-foreground mb-2 pr-12">{event.summary || 'No title'}</h4>
+                            <div className="space-y-1 text-xs text-foreground">
+                                <div className="flex items-center gap-1">
+                                    <Clock className="w-3 h-3"/>
+                                    {format(new Date(event.start?.dateTime || event.start?.date || ''), 'MMM d, h:mm a')}
+                                </div>
+                                {event.attendees && (
+                                    <div>👥  {event.attendees.length} attendees</div>
+                                )}
+                            </div>
+                            {(event.hangoutlink || event.location &&(
+                                <a 
+                                    href={event.hangoutlink || event.location || '#'}
+                                    target="_blank"
+                                    rel='noopener noreferrer'
+                                >
+                                    <Button className='mt-2 w-full px-2 py-1 bg-primary text-primary-foreground text-xs rounded hover:bg-primary/90 transition-colors h-6'>Join Metting</Button>
+                                </a>
+                            ))}
                         </div>
                     ))}
                 </div>
