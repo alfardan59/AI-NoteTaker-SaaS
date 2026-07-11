@@ -3,6 +3,8 @@
 import React from "react";
 import { useMeetings } from "./hooks/useMeetings";
 import { useRouter } from "next/navigation";
+import PastMeetings from "./components/PastMeetings";
+import UpcomingMeetings from "./components/UpcomingMeetings";
 
 const page = () => {
   const {
@@ -45,12 +47,28 @@ const page = () => {
               Past Meetings
             </h2>
           </div>
-          {/* Past Meetings component */}
+          <PastMeetings 
+            pastMeetings={pastMeetings}
+            pastLoading={pastLoading}
+            onMeetingClick={handleMeetingClick}
+            getAttendeeList={getAttendeeList}
+            getInitials={getInitials}
+          />
         </div>
         <div className="w-px bg-border">
           <div className="w-96">
             <div className="sticky top-6">
-              {/* Upcoming Meeting components */}
+              <UpcomingMeetings 
+                upcomingEvents={upcomingEvents}
+                connected={connected}
+                error={error}
+                loading={loading}
+                initialLoading={initialLoading}
+                botToggles={botToggles}
+                onRefresh={fetchUpComingEvents}
+                onToggleBot={toggleBot}
+                onConnectCalendar={directOAuth}
+              />
             </div>
           </div>
         </div>
