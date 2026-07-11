@@ -1,8 +1,9 @@
 import React from 'react'
 import { PastMeeting } from '../hooks/useMeetings'
-import { Clock, Video } from 'lucide-react'
+import { Clock, ExternalLink, Video } from 'lucide-react'
 import AttendeeAvatars from './AttendeeAvatars'
 import { format } from 'date-fns'
+import { Button } from '@/components/ui/button'
 
 interface PastmeetingsProps{
     pastMeetings: PastMeeting[]
@@ -77,8 +78,13 @@ function PastMeetings({
                         </div>
                     </div>
 
-                    <div className='flex gap-2 mt-4' onClick={()=>onMeetingClick(meeting.id)}>
-                        
+                    <div className='flex gap-2 mt-4' onClick={(e)=>e.stopPropagation()}>
+                        <Button className='flex items-center gap-1 px-3 py-1 bg-primary text-primary-foreground text-xs rounded hover:bg-primary/90 transition-colors h-6'
+                        onClick={()=>onMeetingClick(meeting.id)}
+                        >
+                            <ExternalLink className='h-3 w-3'/>
+                            View Details
+                        </Button>
                     </div>
                 </div>
             ))}
