@@ -1,7 +1,8 @@
 import React from 'react'
 import { PastMeeting } from '../hooks/useMeetings'
-import { Video } from 'lucide-react'
+import { Clock, Video } from 'lucide-react'
 import AttendeeAvatars from './AttendeeAvatars'
+import { format } from 'date-fns'
 
 interface PastmeetingsProps{
     pastMeetings: PastMeeting[]
@@ -62,6 +63,22 @@ function PastMeetings({
                                 getInitials={getInitials} />
                             )}
                         </div>
+                        <span className='text-xs bg-green-500/20 text-green-400 py-1 rounded-full'>Completed</span>
+                    </div>
+                    {meeting.description && (
+                        <p className='text-sm text-muted-foreground mb-3'>{meeting.description}</p>
+                    )}
+                    <div className='text-sm text-muted-foreground mb-3'>
+                        <div className='flex items-center gap-2'>
+                            <Clock className='h-4 w-4'/>
+                            <span>
+                                {format(new Date(meeting.startTime),'PPp')} - {format(new Date(meeting.endTime), 'pp')}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div className='flex gap-2 mt-4' onClick={()=>onMeetingClick(meeting.id)}>
+                        
                     </div>
                 </div>
             ))}
