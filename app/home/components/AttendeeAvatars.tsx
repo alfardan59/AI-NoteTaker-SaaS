@@ -25,13 +25,14 @@ function AttendeeAvatars({attendees, getAttendeeList, getInitials}:AttendeeAvata
             </div>
         ))}
 
-        {
-            attendeeList.length>4 &&(
-                <div>
-                    +{attendeeList.length-4}
-                </div>
-            )
-        }
+        {    attendeeList.length>4 &&(
+            <div
+            className='w-6 h-6 rounded-full bg-gray-500 border-2 border-background flex items-center justify-center text-white text-xs font-medium'
+            title={`+${attendeeList.length-4} more`}
+            >
+                +{attendeeList.length-4}
+            </div>
+        )}
     </div>
   )
 }
