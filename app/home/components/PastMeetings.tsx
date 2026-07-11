@@ -1,5 +1,7 @@
 import React from 'react'
 import { PastMeeting } from '../hooks/useMeetings'
+import { Video } from 'lucide-react'
+import AttendeeAvatars from './AttendeeAvatars'
 
 interface PastmeetingsProps{
     pastMeetings: PastMeeting[]
@@ -36,6 +38,35 @@ function PastMeetings({
             </div>
         )
     }
+
+    if(pastMeetings.length===0){
+        return(
+            <div className='bg-card rounded-lg p-8 text-center border border-border'>
+                <Video className='h-12 w-12 mx-auto text-muted-foreground mb-4'/>
+                <h3 className='text-lg font-medium mb-2 text-foreground'>No Past Meetings</h3>
+            </div>
+        )
+    }
+    return(
+        <div className='space-y-4'>
+            {pastMeetings.map((meeting)=>(
+                <div key={meeting.id} className='bg-card rounded-lg p-4 border border-border hover:shadow-md transition-shadow cursor-pointer'
+                onClick={()=>onMeetingClick(meeting.id)}>
+                    <div className='flex justify-between items-start mb-3'>
+                        <div className='flex items-center gap-3 flex-1'>
+                            <h3 className='font-semibold text-lg text-foreground'>{meeting.title}</h3>
+                            {meeting.attendees && (
+                                <AttendeeAvatars
+                                attendees={meeting.attendees}
+                                getAttendeeList={getAttendeeList}
+                                getInitials={getInitials} />
+                            )}
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </div>
+    )
 }
 
 export default PastMeetings
