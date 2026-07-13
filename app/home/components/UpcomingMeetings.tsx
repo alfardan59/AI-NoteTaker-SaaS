@@ -45,7 +45,7 @@ function UpcomingMeetings({
                     <div className="w-12 h-12 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-3">📆</div>
                     <h3 className="font-semibold mb-2 text-foreground text-sm">Connect Calendar</h3>
                     <p className="text-muted-foreground mb-4 text-xs">Connect Google calendar to see upcoming meetings</p>
-                    <Button onClick={onConnectCalendar} disabled={loading} className='w-full px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 transition-colors text-sm'>
+                    <Button onClick={onConnectCalendar} disabled={loading} className='w-full px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 transition-colors text-sm cursor-pointer'>
                         {loading ? "Connecting" : "Connect Google Calendar"}
                     </Button>
                 </div>
