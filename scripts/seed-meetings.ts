@@ -1,18 +1,6 @@
-import "dotenv/config";
-import { prisma } from "@/lib/db";
-
-async function test() {
-  console.log("Connected...");
-
-  const result = await prisma.$queryRaw`SELECT NOW()`;
-  console.log(result);
-}
-
-test().catch(console.error);
-
 import * as path from "path";
 import * as fs from 'fs'
-// import { prisma } from "@/lib/db";
+import { prisma } from "@/lib/db";
 import { randomUUID } from "crypto";
 
 

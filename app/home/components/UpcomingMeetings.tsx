@@ -56,7 +56,7 @@ function UpcomingMeetings({
                 </div>
             ):(
                 <div className="space-y-3">
-                    <Button className='w-full px-3 py-2 bg-muted rounded-lg hover:bg-muted/80 disabled:opacity-50 transition-colors text-foreground text-sm mb-4'
+                    <Button className='w-full px-3 py-2 bg-muted rounded-lg hover:bg-muted/80 disabled:opacity-50 transition-colors text-foreground text-sm mb-4 cursor-pointer'
                     onClick={onRefresh}
                     disabled={loading}
                     >
@@ -69,6 +69,7 @@ function UpcomingMeetings({
                                     checked={!!botToggles[event.id]}
                                     onCheckedChange={()=>onToggleBot(event.id)}
                                     aria-label="Toggle bot for this meeting"
+                                    className="cursor-pointer"
                                 />
                             </div>
                             <h4 className="font-medium text-sm text-foreground mb-2 pr-12">{event.summary || 'No title'}</h4>
@@ -87,7 +88,7 @@ function UpcomingMeetings({
                                     target="_blank"
                                     rel='noopener noreferrer'
                                 >
-                                    <Button className='mt-2 w-full px-2 py-1 bg-primary text-primary-foreground text-xs rounded hover:bg-primary/90 transition-colors h-6'>Join Metting</Button>
+                                    <Button className='mt-2 w-full px-2 py-1 bg-primary text-primary-foreground text-xs rounded hover:bg-primary/90 transition-colors h-6 cursor-pointer'>Join Metting</Button>
                                 </a>
                             ))}
                         </div>

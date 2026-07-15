@@ -79,7 +79,7 @@ function PastMeetings({
                     </div>
 
                     <div className='flex gap-2 mt-4' onClick={(e)=>e.stopPropagation()}>
-                        <Button className='flex items-center gap-1 px-3 py-1 bg-primary text-primary-foreground text-xs rounded hover:bg-primary/90 transition-colors h-6'
+                        <Button className='flex items-center gap-1 px-3 py-1 bg-primary text-primary-foreground text-xs rounded hover:bg-primary/90 transition-colors h-6 cursor-pointer'
                         onClick={()=>onMeetingClick(meeting.id)}
                         >
                             <ExternalLink className='h-3 w-3'/>
