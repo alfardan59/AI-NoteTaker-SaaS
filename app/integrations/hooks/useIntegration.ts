@@ -117,4 +117,15 @@ export function useIntegration(){
             console.error(`Error fetching ${platform} setup data:`, error)
         }
     }
+
+    const handleConnect = (platform:string)=>{
+        if(platform === 'slack'){
+            window.location.href = '/api/slak/install?return=integrations'
+        } else if(platform === 'google-calendar'){
+            window.location.href='/api/auth/google/direct-connect'
+        }else{
+            window.location.href=`/api/integrations/${platform}/auth`
+        }
+    }
+    
 }
