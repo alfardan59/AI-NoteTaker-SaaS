@@ -63,11 +63,11 @@ export function useIntegration(){
     const [loading, setLoading]=useState(true)
     const [setupMode, setSetupMode] = useState<string|null>(null)
     const [setupData, setSetupData] = useState<any>(null)
-    const [seupLoading, setSetupLoading] = useState(false)
+    const [setupLoading, setSetupLoading] = useState(false)
 
     useEffect(()=>{
         if(userId){
-            fetchIntegration()
+            fetchIntegrations()
         }
         const urlParams=new URLSearchParams(window.location.search)
         const setup = urlParams.get('setup')
@@ -77,7 +77,7 @@ export function useIntegration(){
         }
     },[userId])
 
-    const fetchIntegration = async()=>{
+    const fetchIntegrations = async()=>{
         try {
             const response = await fetch('/api/integrations/status')  //We haven't made this api we will mke this in future
             const data=await response.json()
@@ -140,9 +140,50 @@ export function useIntegration(){
                     method:'POST'
                 })
             }
-            fetchIntegration()
+            fetchIntegrations()
+           
         } catch (error) {
             console.error(`error disconnectiong:`,error)
         }
+    }
+
+    const handleSetupSubmit = async(platform:string, config: any)=>{
+        setSetupLoading(true)
+        try {
+            const response = await fetch(`/api/integrations/${platform}/setup`,{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify(config) //Here id and name of the project will be passed in config
+            })
+            if(response.ok){
+                setSetupMode(null)
+                setSetupData(null)
+
+                fetchIntegrations()
+                window.history.replaceState({},'','/integrations')
+            }
+        } catch (error) {
+            console.error('Error saving setup:', error)
+        } finally{
+            setSetupLoading(false)
+        }
+    }
+
+    return {
+        integrations,
+        loading,
+        setupMode,
+        setSetupMode,
+        setupData,
+        setSetupData,
+        setupLoading,
+        setSetupLoading,
+        fetchIntegrations,
+        fetchSeupData,
+        handleConnect,
+        handleDisconnect,
+        handleSetupSubmit
     }
 }
