@@ -1,4 +1,5 @@
 import { useAuth } from "@clerk/nextjs"
+import { platform } from "os"
 import { useEffect, useState } from "react"
 
 export interface Integration{
@@ -127,5 +128,21 @@ export function useIntegration(){
             window.location.href=`/api/integrations/${platform}/auth`
         }
     }
-    
+
+    const handleDisconnect = async(platform:string)=>{
+        try {
+            if(platform==='google-calendar'){
+                await fetch ('/api/auth/google/disconnect',{
+                    method:'POST'
+                })
+            } else{
+                await fetch(`/api/integrations/${platform}/disconnect`,{
+                    method:'POST'
+                })
+            }
+            fetchIntegration()
+        } catch (error) {
+            console.error(`error disconnectiong:`,error)
+        }
+    }
 }
