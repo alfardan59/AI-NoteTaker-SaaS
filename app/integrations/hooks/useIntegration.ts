@@ -78,7 +78,7 @@ export function useIntegration(){
 
     const fetchIntegration = async()=>{
         try {
-            const response = await fetch('/api/integrations/status')
+            const response = await fetch('/api/integrations/status')  //We haven't made this api we will mke this in future
             const data=await response.json()
 
             const calendarResponse = await fetch("/api/user/calendar-status")
@@ -105,6 +105,16 @@ export function useIntegration(){
             console.error("Error fetching Integration:",error)
         } finally{
             setLoading(false)
+        }
+    }
+
+    const fetchSeupData = async(platform:string)=>{
+        try {
+            const response = await fetch(`/api/integrations/${platform}/setup`) //We haven't made this api we will make this in future
+            const data = await response.json()
+            setSetupData(data)
+        } catch (error) {
+            console.error(`Error fetching ${platform} setup data:`, error)
         }
     }
 }
