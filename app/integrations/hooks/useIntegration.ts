@@ -65,15 +65,46 @@ export function useIntegration(){
     const [seupLoading, setSetupLoading] = useState(false)
 
     useEffect(()=>{
-        if(userId{
+        if(userId){
             fetchIntegration()
-        })
+        }
         const urlParams=new URLSearchParams(window.location.search)
         const setup = urlParams.get('setup')
         if(setup && ['trello', 'jira', 'asana', 'slack'].includes(setup)){
             setSetupMode(setup)
             fetchSeupData(setup)
         }
+    },[userId])
+
+    const fetchIntegration = async()=>{
+        try {
+            const response = await fetch('/api/integrations/status')
+            const data=await response.json()
+
+            const calendarResponse = await fetch("/api/user/calendar-status")
+            const calendarData=await calendarResponse.json()
+
+            setIntegrations(prev=>prev.map(integration=>{
+                if(integration.platform === 'google-calendar'){
+                    return{
+                        ...integration,
+                        connected: calendarData.connected || false
+                    }
+                }
+                const status = data.find((d:any)=>d.platform === integration.platform)
+                return {
+                    ...integration,
+                    connected: status?.connected || false,
+                    boardName: status?.boardName,
+                    projectName: status?.process,
+                    channelName: status?.channelName
+                }
+            }))
+
+        } catch (error) {
+            console.error("Error fetching Integration:",error)
+        } finally{
+            setLoading(false)
+        }
     }
-    ,[])
 }
