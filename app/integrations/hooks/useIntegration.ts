@@ -1,5 +1,5 @@
 import { useAuth } from "@clerk/nextjs"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export interface Integration{
     platform:'google-calendar' | 'trello' | 'jira' | 'asana' | 'slack'
@@ -13,7 +13,7 @@ export interface Integration{
 }
 
 export function useIntegration(){
-    const {useId} = useAuth()
+    const {userId} = useAuth()
 
     const [integrations, setIntegrations]=useState<Integration[]>([
         {
@@ -58,4 +58,22 @@ export function useIntegration(){
         },
         
     ])
+
+    const [loading, setLoading]=useState(true)
+    const [setupMode, setSetupMode] = useState<string|null>(null)
+    const [setupData, setSetupData] = useState<any>(null)
+    const [seupLoading, setSetupLoading] = useState(false)
+
+    useEffect(()=>{
+        if(userId{
+            fetchIntegration()
+        })
+        const urlParams=new URLSearchParams(window.location.search)
+        const setup = urlParams.get('setup')
+        if(setup && ['trello', 'jira', 'asana', 'slack'].includes(setup)){
+            setSetupMode(setup)
+            fetchSeupData(setup)
+        }
+    }
+    ,[])
 }
