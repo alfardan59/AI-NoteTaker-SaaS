@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs/server";
+import { channel } from "diagnostics_channel";
 import { NextResponse } from "next/server";
+import { platform } from "os";
 
 export async function GET(){
     try {
@@ -38,8 +40,25 @@ export async function GET(){
             }
         })
 
-        
+        if(dbUser?.slackConnected){
+            result.push({
+                platform:'slack',
+                name: 'SLack',
+                logo: '🗨️',
+                connected:true,
+                channelName: dbUser.preferredChannelName || 'Not Set'
+            })
+        }else{
+            result.push({
+                platform:'slack',
+                name:'Slack',
+                logo: '🗨️',
+                connected: false,
+            })
+        }
+        return NextResponse.json(result)
     } catch (error) {
-        
+        console.error('Error fetching integration status:',error)
+        return NextResponse.json({error:'Internal Error'},{status:500})
     }
 }
