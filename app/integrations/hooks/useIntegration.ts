@@ -1,5 +1,4 @@
 import { useAuth } from "@clerk/nextjs"
-import { platform } from "os"
 import { useEffect, useState } from "react"
 
 export interface Integration{
@@ -30,7 +29,6 @@ export function useIntegration(){
             name:'Trello',
             description:'Add action items to your Trello boards',
             connected: false,
-            channelName:undefined,
             logo:'/trello.png'
         },
         {
@@ -38,7 +36,6 @@ export function useIntegration(){
             name:'Jira',
             description:'Create tickets for developement task',
             connected:false,
-            channelName:undefined,
             logo:'/jira.png'
         },
         {
@@ -46,7 +43,6 @@ export function useIntegration(){
             name:'Asana',
             description:'Sync task with your team projects',
             connected:false,
-            channelName:undefined,
             logo:'/asana.png'
         },
         {
@@ -54,7 +50,6 @@ export function useIntegration(){
             name:'Google Calendar',
             description:'Auto-sync meetings',
             connected:false,
-            channelName:undefined,
             logo:'/gcal.png'
         },
         
@@ -73,7 +68,7 @@ export function useIntegration(){
         const setup = urlParams.get('setup')
         if(setup && ['trello', 'jira', 'asana', 'slack'].includes(setup)){
             setSetupMode(setup)
-            fetchSeupData(setup)
+            fetchSetupData(setup)
         }
     },[userId])
 
@@ -97,7 +92,7 @@ export function useIntegration(){
                     ...integration,
                     connected: status?.connected || false,
                     boardName: status?.boardName,
-                    projectName: status?.process,
+                    projectName: status?.projectName,
                     channelName: status?.channelName
                 }
             }))
@@ -109,7 +104,7 @@ export function useIntegration(){
         }
     }
 
-    const fetchSeupData = async(platform:string)=>{
+    const fetchSetupData = async(platform:string)=>{
         try {
             const response = await fetch(`/api/integrations/${platform}/setup`) //We haven't made this api we will make this in future
             const data = await response.json()
@@ -181,7 +176,7 @@ export function useIntegration(){
         setupLoading,
         setSetupLoading,
         fetchIntegrations,
-        fetchSeupData,
+        fetchSetupData,
         handleConnect,
         handleDisconnect,
         handleSetupSubmit

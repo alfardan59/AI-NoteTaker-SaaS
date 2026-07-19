@@ -1,8 +1,6 @@
 import { prisma } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs/server";
-import { channel } from "diagnostics_channel";
 import { NextResponse } from "next/server";
-import { platform } from "os";
 
 export async function GET(){
     try {
@@ -19,9 +17,9 @@ export async function GET(){
         })
 
         const allPlatforms = [
-            {platform: 'trello', name:'Trello', logo: '', connected: false},
-            {platform: 'jira', name:'Jira', logo: '', connected: false},
-            {platform: 'asana', name:'Asana', logo: '', connected: false},
+            {platform: 'trello', name:'Trello', logo: '💠', connected: false},
+            {platform: 'jira', name:'Jira', logo: '🔵', connected: false},
+            {platform: 'asana', name:'Asana', logo: '🟠', connected: false}
         ]
 
         const result: any[]= allPlatforms.map(platform=>{
