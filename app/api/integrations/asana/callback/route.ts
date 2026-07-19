@@ -1,3 +1,4 @@
+import { prisma } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -33,7 +34,29 @@ export async function GET(request:NextRequest){
         }
 
         const tokenData = await tokenResponse.json()
+
+        await prisma.userIntegration.upsert({
+            where:{
+                userId_platform:{
+                    userId,
+                    platform:'asana'
+                }
+            },
+            update:{
+                accessToken: tokenData.acess_token,
+                refreshToken: tokenData.refreshToken,
+                updatedAt: new Date()
+            },
+            create:{
+                userId,
+                platform: 'asana',
+                accessToken: tokenData.access_token,
+                refreshToken: tokenData.refresh_token,
+            }
+        })
+        return NextResponse.redirect(new URL('/integrations?success=asana_connected&setip=asana', process.env.NEXT_PUBLIC_APP_URL))
     } catch (error) {
-        
+        console.error("Error saving asana integrations:", error)
+        return NextResponse.redirect(new URL('/integrations?error=save_failed', process.env.NEXT_PUBLIC_APP_URL))
     }
 }
