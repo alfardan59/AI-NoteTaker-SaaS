@@ -32,7 +32,13 @@ export async function GET(){
             }
         })
 
+        const dbUser = await prisma.user.findFirst({
+            where:{
+                clerkId: user.id
+            }
+        })
 
+        
     } catch (error) {
         
     }
