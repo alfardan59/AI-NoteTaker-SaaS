@@ -33,4 +33,28 @@ export class AsanaAPI{
 
         return response.json()
     }
+
+    async createProject(token:string, workspaceId: string, name:string){
+        const response = await fetch(
+            `${this.baseUrl}/projects`,
+            {
+                method:'POST',
+                headers:{
+                    'Authorization':`Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body:JSON.stringify({
+                    data:{
+                        name:name,
+                        workspace:workspaceId
+                    }
+                })
+            }
+        )
+        if (!response.ok) {
+            throw new Error('Failed to create project')
+        }
+
+        return response.json()
+    }
 }
