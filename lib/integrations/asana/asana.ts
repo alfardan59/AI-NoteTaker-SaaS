@@ -1,3 +1,5 @@
+import { ActionItemData } from "../types"
+
 export class AsanaAPI{
     private baseUrl = 'https://app.asana.com/api/1.0'
 
@@ -54,7 +56,30 @@ export class AsanaAPI{
         if (!response.ok) {
             throw new Error('Failed to create project')
         }
+        return response.json()
+    }
 
+    async createTask(token:string, projectId:string, data:ActionItemData){
+        const response = await fetch(
+            `${this.baseUrl}/tasks`,
+            {
+                method:'POST',
+                headers:{
+                    'Authorization':`Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body:JSON.stringify({
+                    data:{
+                        name:data.title,
+                        notes:data.description || 'Action Item from the meeting',
+                        projects: [projectId]
+                    }
+                })
+            }
+        )
+        if (!response.ok) {
+            throw new Error('Failed to create task')
+        }
         return response.json()
     }
 }
