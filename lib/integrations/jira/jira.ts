@@ -1,3 +1,5 @@
+import { ActionItemData } from "../types"
+
 export class JiraAPI{
     private baseUrl='https://api.atlassian.com/ex/jira'
 
@@ -89,5 +91,50 @@ export class JiraAPI{
         return response.json()
     }
 
-    
+    async craeteIssue(token:string, cloudId:string, projectKey:string, data:ActionItemData){
+        const response = await fetch(
+            `${this.baseUrl}/${cloudId}/rest/api/3/issue`,
+            {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    fields: {
+                        project: {
+                            key: projectKey
+                        },
+                        summary: data.title,
+                        description: {
+                            type: 'doc',
+                            version: 1,
+                            content: [
+                                {
+                                    type: 'paragraph',
+                                    content: [
+                                        {
+                                            type: 'text',
+                                            text: data.description || 'Action item from meeting'
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        issuetype: {
+                            name: 'Task'
+                        }
+                    }
+                })
+            }
+        )
+
+        if (!response.ok) {
+            const errorText = await response.text()
+            console.error('Jira issue creation error: ', response.status, errorText)
+            throw new Error(`Failed to create issue: ${response.status} - ${errorText}`)
+        }
+
+        return response.json()
+    }
 }
