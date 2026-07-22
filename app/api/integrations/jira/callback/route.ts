@@ -15,46 +15,69 @@ export async function GET(request:NextRequest){
     }
 
     try {
-        const tokenResponse = await fetch('https://app.asana.com/-/oauth_token',{
+        const tokenResponse = await fetch('https://auth.atlassian.com/oauth.token',{
             method:'POST',
             headers:{
-                'Content-Type' :'application/x-www-form-urlencoded'
+                'Content-Type' :'application/json'
             },
-            body: new URLSearchParams({
+            body: JSON.stringify({
                 grant_type: 'authorization_code',
-                client_id: process.env.ASANA_CLIENT_ID!,
-                client_secret: process.env.ASANA_CLIENT_SECRET!,
-                redirect_uri: `${process.env.NEXT_PUBLIC_APP_URL}/api/integrations/asana/callback`,
+                client_id: process.env.JIRA_CLIENT_ID!,
+                client_secret: process.env.JIRA_CLIENT_SECRET!,
+                redirect_uri: `${process.env.NEXT_PUBLIC_APP_URL}/api/integrations/jira/callback`,
                 code: code
             })
         })
 
         if(!tokenResponse.ok){
+            const errorText = await tokenResponse.text()
+            console.error("Token exchange failed:", errorText)
             throw new Error('Failed to exchange token code')
         }
 
         const tokenData = await tokenResponse.json()
 
+        const resourcesResponse = await fetch('https://api.atlassian.com/oauth/token/accessible-resources',{
+            headers:{
+                'Authorization': `Bearer ${tokenData.access_token}`
+            }
+        })
+
+        if(!resourcesResponse.ok){
+            throw new Error('Failed to get accessible resource')
+        }
+
+        const resources = await resourcesResponse.json()
+        const cloudId=resources[0]?.id 
+
+        if(!cloudId){
+            throw new Error('No accessible Jira resource found')
+        }
+
         await prisma.userIntegration.upsert({
             where:{
                 userId_platform:{
                     userId,
-                    platform:'asana'
+                    platform:'jira'
                 }
             },
             update:{
                 accessToken: tokenData.access_token,
                 refreshToken: tokenData.refresh_token,
+                expiresAt:new Date(Date.now()+(tokenData.expires_in * 1000)),
+                workspaceId:cloudId,
                 updatedAt: new Date()
             },
             create:{
                 userId,
-                platform: 'asana',
+                platform: 'jira',
                 accessToken: tokenData.access_token,
                 refreshToken: tokenData.refresh_token,
+                expiresAt:new Date(Date.now()+(tokenData.expires_in * 1000)),
+                workspaceId:cloudId,
             }
         })
-        return NextResponse.redirect(new URL('/integrations?success=asana_connected&setup=asana', process.env.NEXT_PUBLIC_APP_URL))
+        return NextResponse.redirect(new URL('/integrations?success=jira_connected&setup=jira', process.env.NEXT_PUBLIC_APP_URL))
     } catch (error) {
         console.error("Error saving asana integrations:", error)
         return NextResponse.redirect(new URL('/integrations?error=save_failed', process.env.NEXT_PUBLIC_APP_URL))
