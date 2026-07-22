@@ -43,8 +43,8 @@ export async function GET(request:NextRequest){
                 }
             },
             update:{
-                accessToken: tokenData.acess_token,
-                refreshToken: tokenData.refreshToken,
+                accessToken: tokenData.access_token,
+                refreshToken: tokenData.refresh_token,
                 updatedAt: new Date()
             },
             create:{
