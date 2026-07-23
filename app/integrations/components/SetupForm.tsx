@@ -1,7 +1,9 @@
+import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 interface SetupFormProps{
     platform:string
@@ -63,8 +65,9 @@ const SetupForm = ({platform,data,onSubmit,onCancel,loading}:SetupFormProps) => 
                             {items?.map((item: any) => (
                                 <SelectItem 
                                     key={item.id || item.key || item.gid}
-                                    value={item.id || item.key || item.gid}>
-                                        {item.name}
+                                    value={item.id || item.key || item.gid}
+                                >
+                                    {item.name}
                                 </SelectItem>
                             ))}
                         </SelectGroup>
@@ -78,7 +81,32 @@ const SetupForm = ({platform,data,onSubmit,onCancel,loading}:SetupFormProps) => 
                     placeholder={`Enter new ${itemLabel} name`}/>
             )}
         </div>
-        
+        <div className='mb-6'>
+            <div className='flex items-center gap-2 text-sm'>
+                <Checkbox 
+                id='create-new'
+                checked={createNew}
+                onCheckedChange={(checked)=>setCreateNew(!!checked)}/>
+                <Label htmlFor='create-new'>Create new {itemLabel}</Label>
+            </div>
+        </div>
+
+        <div className='flex gap-3'>
+            <Button variant="outline"
+                onClick={onCancel}
+                className="flex-1 cursor-pointer"
+                type='button'
+            >
+                Cancel
+            </Button>
+            <Button onClick={handleSubmit}
+                disabled={loading || (!createNew && !selectedId) || (createNew && !newName)}
+                className='flex-1 cursor-pointer'
+                type='button'
+            >
+                {loading?'Saving!':'Save'}
+            </Button>
+        </div>
     </div>
   )
 }
