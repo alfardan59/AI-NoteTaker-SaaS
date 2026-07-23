@@ -1,3 +1,6 @@
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
 import React, { useState } from 'react'
 
 interface SetupFormProps{
@@ -35,7 +38,48 @@ const SetupForm = ({platform,data,onSubmit,onCancel,loading}:SetupFormProps) => 
         }
     }
   return (
-    <div>SetupForm</div>
+    <div>
+        <div className='mb-4'>
+            <Label className='block text-sm font-medium text-foreground mb-2'>Select {itemLabel} for action items:</Label>
+
+            {!createNew ? (
+                <Select
+                value={selectedId}
+                onValueChange={(value)=>{
+                    if (value == null) return;
+                    const selected=items?.find((item:any)=>
+                        item.id===value || item.key===value || item.gid===value)
+                    setSelectedId(value)
+                    setSelectedName(selected?.name || '')
+                }}>
+                    <SelectTrigger className='w-full'>
+                        <SelectValue placeholder={`choose exsisting ${itemLabel}...`} />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectGroup>
+                            <SelectLabel>
+                                {itemLabel.charAt(0).toUpperCase() + itemLabel.slice(1)}s
+                            </SelectLabel>
+                            {items?.map((item: any) => (
+                                <SelectItem 
+                                    key={item.id || item.key || item.gid}
+                                    value={item.id || item.key || item.gid}>
+                                        {item.name}
+                                </SelectItem>
+                            ))}
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
+            ):(
+                <Input 
+                    type='text'
+                    value={newName}
+                    onChange={(e)=>setNewName(e.target.value)}
+                    placeholder={`Enter new ${itemLabel} name`}/>
+            )}
+        </div>
+        
+    </div>
   )
 }
 
