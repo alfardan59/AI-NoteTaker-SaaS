@@ -3,6 +3,7 @@ import { JiraAPI } from "@/lib/integrations/jira/jira"
 import { refreshJiraToken } from "@/lib/integrations/jira/refreshToken"
 import { auth } from "@clerk/nextjs/server"
 import { NextRequest, NextResponse } from "next/server"
+import { error } from "node:console"
 
 async function getValidToken(integration:any){
     if(integration.expiresAt && new Date()>integration.expiresAt){
@@ -93,21 +94,33 @@ export async function POST(request:NextRequest){
             }
         }
 
-        else if{projectId}{
+        else if (projectId) {
+            const projects = await jira.getProjects(validToken, integration.workspaceId)
+            const selectedProject = projects.values.find(p => p.id === projectId)
 
+            if (!selectedProject) {
+                return NextResponse.json({ error: 'project not found' }, { status: 404 })
+            }
+
+            finalProjectKey = selectedProject.key
+            finalProjectName = selectedProject.name
+        }
+
+        else{
+            return NextResponse.json({error: 'Either ProjectId or Create New with Project name must be provided'}, {status:404})
         }
         await prisma.userIntegration.update({
             where:{
                 id:integration.id
             },
             data:{
-                projectId:finalProjectId,
+                projectId:finalProjectKey,
                 projectName:finalProjectName,
             }
         })
         return NextResponse.json({success:true, projectId:finalProjectId, projectName:finalProjectName})
     } catch (error) {
-     console.error('Error setting up asana project:', error)
+     console.error('Error setting up jira project:', error)
      return NextResponse.json({error:'Failed to setup project'},{status:500})   
     }
 }
