@@ -1,6 +1,8 @@
 import React from 'react'
 import { useIntegration } from './hooks/useIntegration'
 import SetupForm from './components/SetupForm'
+import IntegrationCard from './components/IntegrationCard'
+import { platform } from 'os'
 
 const Integrations = () => {
     const{
@@ -54,7 +56,23 @@ const Integrations = () => {
                     </div>
                 </div>
             )}
-            
+            <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
+                {integrations.map((integration)=>(
+                    <IntegrationCard key={integration.platform} integration={integration} onConnect={handleConnect} onDisconnect={handleDisconnect} onSetup={(platform)=>{
+                        setSetupMode(platform)
+                        fetchSetupData(platform)
+                    }}/>
+                ))}
+            </div>
+            <div className='mt-8 bg-card rounded-lg p-6 border border-border'>
+                <h3 className='font-semibold text-foreground mb-2'>How it works</h3>
+                <ol className='text-sm text-muted-foreground space-y-2'>
+                    <li>1. Connect the tools you want to use.</li>
+                    <li>2. Set where your action items should be created.</li>
+                    <li>3. In your meeting notes, hover over an action item and click <strong>"Add to"</strong>.</li>
+                    <li>4. Pick the destination tool(s) from the dropdown to create the task instantly.</li>
+                </ol>
+            </div>
         </div>
     </div>
   )
