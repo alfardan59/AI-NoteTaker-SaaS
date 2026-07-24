@@ -1,5 +1,6 @@
 import React from 'react'
 import { useIntegration } from './hooks/useIntegration'
+import SetupForm from './components/SetupForm'
 
 const Integrations = () => {
     const{
@@ -29,7 +30,33 @@ const Integrations = () => {
         )
     }
   return (
-    <div>Integration</div>
+    <div className='min-h-screen bg-background p-6'>
+        <div className='max-w-4xl max-auto'>
+            <div className='mb-8'>
+                <h1 className='text-2xl font-bold text-foreground mb-2'>Integrations</h1>
+                <p className='text-muted-foreground'>Connect your favorite tools to automatically add action items from meetings</p>
+            </div>
+            {setupMode &&(
+                <div className='fixed inset-0 bg-black/50 flex items-center justify-center z-50'>
+                    <div className='bg-card rounded-lg p-6 border border-border max-w-md w-full mx-4'>
+                        <h2 className='text-lg font-semibold text-foreground mb-4'>
+                            Setup {setupMode.charAt(0).toUpperCase()+setupMode.slice(1)}
+                        </h2>
+                        <SetupForm
+                            platform={setupMode}
+                            data={setupData}
+                            onSubmit={handleSetupSubmit}
+                            onCancel={()=>{
+                                setSetupMode(null)
+                                setSetupData(null)
+                                window.history.replaceState({},',','/integrations')
+                            }} loading={setupLoading} />
+                    </div>
+                </div>
+            )}
+            
+        </div>
+    </div>
   )
 }
 
