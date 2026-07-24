@@ -1,7 +1,8 @@
 import React from 'react'
 import { Integration } from '../hooks/useIntegration'
 import Image from 'next/image'
-import { Check } from 'lucide-react'
+import { Check, Settings } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 interface IntegrationCardProps{
     integration:Integration
@@ -60,6 +61,24 @@ const IntegrationCard = ({integration, onConnect, onDisconnect, onSetup}:Integra
                         </div>
                     </div>
                 )}
+
+                <div className='flex gap-2'>
+                    {integration.connected ? (
+                        integration.platform === 'google-calendar' ? (
+                            <Button variant="outline" onClick={()=>onDisconnect(integration.platform)}
+                            className='flex-1 cursor-pointer' type='button'>
+                                Disconnect
+                            </Button>
+                        ):(
+                            <>
+                            <Button variant='outline' onClick={()=>onDisconnect(integration.platform)} className='flex-1 cursor-pointer'>Disconnect</Button>
+                            <Button variant='outline' onClick={()=>onSetup(integration.platform)} className='px-3 py-2 cursor-pointer' type='button'>
+                                <Settings className='h-4 w-4'/>
+                            </Button>
+                            </>
+                        )
+                    ):()}
+                </div>
             </div>
         </div>
     </div>
