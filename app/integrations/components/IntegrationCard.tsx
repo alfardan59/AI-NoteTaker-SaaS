@@ -1,7 +1,6 @@
-import React from 'react'
 import { Integration } from '../hooks/useIntegration'
 import Image from 'next/image'
-import { Check, Settings } from 'lucide-react'
+import { Check, ExternalLink, Settings } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 interface IntegrationCardProps{
@@ -77,7 +76,12 @@ const IntegrationCard = ({integration, onConnect, onDisconnect, onSetup}:Integra
                             </Button>
                             </>
                         )
-                    ):()}
+                    ):(
+                        <Button onClick={()=>onConnect(integration.platform)} className='flex-1 flex items-center justify-center gap-2 cursor-pointer' type='button'>
+                            Connect
+                            <ExternalLink className='h-4 w-4'/>
+                        </Button>
+                    )}
                 </div>
             </div>
         </div>
