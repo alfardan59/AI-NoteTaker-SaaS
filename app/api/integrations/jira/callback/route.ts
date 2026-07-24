@@ -15,7 +15,7 @@ export async function GET(request:NextRequest){
     }
 
     try {
-        const tokenResponse = await fetch('https://auth.atlassian.com/oauth.token',{
+        const tokenResponse = await fetch('https://auth.atlassian.com/oauth/token',{
             method:'POST',
             headers:{
                 'Content-Type' :'application/json'
@@ -39,7 +39,8 @@ export async function GET(request:NextRequest){
 
         const resourcesResponse = await fetch('https://api.atlassian.com/oauth/token/accessible-resources',{
             headers:{
-                'Authorization': `Bearer ${tokenData.access_token}`
+                'Authorization': `Bearer ${tokenData.access_token}`,
+                'Accept':'application/json'
             }
         })
 
@@ -79,7 +80,7 @@ export async function GET(request:NextRequest){
         })
         return NextResponse.redirect(new URL('/integrations?success=jira_connected&setup=jira', process.env.NEXT_PUBLIC_APP_URL))
     } catch (error) {
-        console.error("Error saving asana integrations:", error)
+        console.error("Error saving jira integrations:", error)
         return NextResponse.redirect(new URL('/integrations?error=save_failed', process.env.NEXT_PUBLIC_APP_URL))
     }
 }

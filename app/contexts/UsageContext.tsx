@@ -76,7 +76,7 @@ export function UsageProvider({children}:{children:ReactNode}){
         }
 
         try {
-            const response = await fetch('api/user/increment',{
+            const response = await fetch('/api/user/increment-chat',{
                 method: 'POST',
                 headers:{ 'Content-type': 'application/json'}
             })

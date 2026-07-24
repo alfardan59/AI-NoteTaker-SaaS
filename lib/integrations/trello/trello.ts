@@ -6,7 +6,7 @@ export class TrelloAPI{
     private baseUrl = 'https://api.trello.com/1'
 
     async getBoards(token: string){
-        const response = await fetch(`{${this.baseUrl}/member/me/board?key=${this.apiKey}&token=${token}`)
+        const response = await fetch(`{${this.baseUrl}/members/me/board?key=${this.apiKey}&token=${token}`)
         if(!response.ok){
             throw new Error('Failed to fetch boards')
         }

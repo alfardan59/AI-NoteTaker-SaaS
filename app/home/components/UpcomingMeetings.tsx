@@ -73,7 +73,7 @@ function UpcomingMeetings({
                                 />
                             </div>
                             <h4 className="font-medium text-sm text-foreground mb-2 pr-12">{event.summary || 'No title'}</h4>
-                            <div className="space-y-1 text-xs text-foreground">
+                            <div className="space-y-1 text-xs text-muted-foreground">
                                 <div className="flex items-center gap-1">
                                     <Clock className="w-3 h-3"/>
                                     {format(new Date(event.start?.dateTime || event.start?.date || ''), 'MMM d, h:mm a')}

@@ -14,8 +14,8 @@ export interface CalendarEvent{
     location?: string
     hangoutlink?: string
     conferenceData?: any
-    botScheduled: boolean
-    meetingId:string
+    botScheduled?: boolean
+    meetingId?:string
 }
 
 export interface PastMeeting{
@@ -166,7 +166,7 @@ export function useMeetings(){
             if(Array.isArray(parsed)){
                 return parsed.map(name=> String(name).trim())
             }
-            return [String(parsed.trim())]
+            return [String(parsed).trim()]
         } catch (error) {
             const attendeesString = String(attendees)
             return attendeesString.split(',').map(name=>name.trim()).filter(Boolean)

@@ -107,7 +107,7 @@ export async function POST(request:NextRequest){
         }
 
         else{
-            return NextResponse.json({error: 'Either ProjectId or Create New with Project name must be provided'}, {status:404})
+            return NextResponse.json({error: 'Either ProjectId or Create New with Project name must be provided'}, {status:400})
         }
         await prisma.userIntegration.update({
             where:{
@@ -118,7 +118,7 @@ export async function POST(request:NextRequest){
                 projectName:finalProjectName,
             }
         })
-        return NextResponse.json({success:true, projectId:finalProjectId, projectName:finalProjectName})
+        return NextResponse.json({success:true, projectId:finalProjectKey, projectName:finalProjectName})
     } catch (error) {
      console.error('Error setting up jira project:', error)
      return NextResponse.json({error:'Failed to setup project'},{status:500})   

@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import PastMeetings from "./components/PastMeetings";
 import UpcomingMeetings from "./components/UpcomingMeetings";
 
-const page = () => {
+const Home = () => {
   const {
     userId,
     upcomingEvents,
@@ -33,9 +33,9 @@ const page = () => {
   if (!userId) {
     return (
       <div className="flex items-center justify-center h-screen">
-        Please SignIn
+        Loading
       </div>
-    );
+    )
   }
 
   return (
@@ -77,4 +77,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Home;

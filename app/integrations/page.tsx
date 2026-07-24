@@ -1,8 +1,6 @@
-import React from 'react'
 import { useIntegration } from './hooks/useIntegration'
 import SetupForm from './components/SetupForm'
 import IntegrationCard from './components/IntegrationCard'
-import { platform } from 'os'
 
 const Integrations = () => {
     const{
@@ -33,7 +31,7 @@ const Integrations = () => {
     }
   return (
     <div className='min-h-screen bg-background p-6'>
-        <div className='max-w-4xl max-auto'>
+        <div className='max-w-4xl mx-auto'>
             <div className='mb-8'>
                 <h1 className='text-2xl font-bold text-foreground mb-2'>Integrations</h1>
                 <p className='text-muted-foreground'>Connect your favorite tools to automatically add action items from meetings</p>

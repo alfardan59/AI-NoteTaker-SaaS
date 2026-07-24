@@ -15,6 +15,7 @@ export class JiraAPI{
             console.error('Jira project error: ', response.status,errorText)
             throw new Error(`Failed to fetch project ${response.status}`)
         }
+        return response.json()
     }
 
     async getAccessibleResources(token:string){

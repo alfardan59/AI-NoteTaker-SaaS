@@ -46,6 +46,7 @@ function PastMeetings({
             <div className='bg-card rounded-lg p-8 text-center border border-border'>
                 <Video className='h-12 w-12 mx-auto text-muted-foreground mb-4'/>
                 <h3 className='text-lg font-medium mb-2 text-foreground'>No Past Meetings</h3>
+                <p className='text-muted-foreground'>your completed Meeting will appear here</p>
             </div>
         )
     }
