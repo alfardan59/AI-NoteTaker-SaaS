@@ -1,3 +1,5 @@
+'use client'
+
 import { useIntegration } from './hooks/useIntegration'
 import SetupForm from './components/SetupForm'
 import IntegrationCard from './components/IntegrationCard'
