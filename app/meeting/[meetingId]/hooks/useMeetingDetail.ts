@@ -139,4 +139,28 @@ export function useMeetingDetails(){
             processTranscript()
         }
     },[meetingId, userId, isLoaded, userChecked])
+
+    const deleteActionItem=async(id:number)=>{
+        if(!isOwner){
+            return
+        }
+        setLocalActionItems(prev=>prev.filter(item=>item.id !==id))
+    }
+
+    const addActionItem = async(text:string)=>{
+        if(!isOwner){
+            return
+        }
+        try {
+            const response=await fetch(`/api/meetings/${meetingId}`) //We will create this route
+            if(response.ok){
+                const data=await response.json()
+                setMeetingData(data)
+                setLocalActionItems(data.actionItems || [])
+            }
+        } catch (error) {
+            console.error("Error refteching meeting data:",error)
+        }
+    }
+
 }
