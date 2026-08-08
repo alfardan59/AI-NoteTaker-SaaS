@@ -99,4 +99,44 @@ export function useMeetingDetails(){
             fetchMeetingData()
         }
     },[meetingId,userId,isLoaded])
+
+    //useEffect for transcript
+    useEffect(()=>{
+        const processTranscript=async()=>{
+            try {
+                const meetingResponse=await fetch(`/api/meetings/${meetingId}`) //We will create this route
+                if(!meetingResponse.ok){
+                    return
+                }
+                const meeting=await meetingResponse.json()
+                if(meeting.transcript && !meeting.ragProcessed && userId===meeting.userId){
+                    let transcriptText=''
+                    if(typeof meeting.transcript==='string'){
+                        transcriptText=meeting.transcript
+                    } else if(Array.isArray(meeting.transcript)){
+                        transcriptText=meeting.transcript
+                        .map((segment:any)=>`${segment.speaker}:${segment.words((w:any)=>w.word).join(' ')}`)
+                        .join('\n')
+                    }
+
+                    await fetch('/api/rag/process',{
+                        method:'POST',
+                        headers:{
+                            'Content-Type':'application/json'
+                        },
+                        body: JSON.stringify({
+                            meetingId,
+                            transcript:transcriptText,
+                            meetingTitle: meeting.title
+                        })
+                    })
+                }
+            } catch (error) {
+                console.error("Error checking RAG Processing", error)
+            }
+        }
+        if(isLoaded && userChecked){
+            processTranscript()
+        }
+    },[meetingId, userId, isLoaded, userChecked])
 }
