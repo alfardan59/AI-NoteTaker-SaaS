@@ -1,5 +1,4 @@
 import { useUsage } from "@/app/contexts/UsageContext"
-import { timeStamp } from "console"
 import { useState } from "react"
 
 export interface ChatMesaage{
@@ -96,5 +95,36 @@ export function useChatCore({apiEndpoint,getRequestBody}:UseChatCoreOptions){
         }finally{
             setIsLoading(false)
         }
+    }
+
+    const handleSuggestionClick=(suggestion:string)=>{
+        if(!chatInput){
+            return
+        }
+        setShowSuggestions(false)
+        setChatInput(suggestion)
+    }
+
+    const handleInputChange=(value:string)=>{
+        setChatInput(value)
+
+        if(value.length>0 && showSuggestions){
+            setShowSuggestions(false)
+        }
+    }
+
+    return{
+        chatInput,
+        setChatInput,
+        messages,
+        setMessages,
+        showSuggestions,
+        setShowSuggestions,
+        isLoading,
+        setIsLoading,
+        handleSendMessage,
+        handleSuggestionClick,
+        handleInputChange,
+        canChat
     }
 }
