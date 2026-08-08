@@ -16,7 +16,7 @@ const IntegrationCard = ({integration, onConnect, onDisconnect, onSetup}:Integra
     <div className='bg-card rounded-lg p-6 border-border'>
         <div className='flex items-start justify-between mb-4'>
             <div className='flex items-center gap-3'>
-                <div className='w-8 h-8 relative flex-shrink-0'>
+                <div className='w-8 h-8 relative shrink-0'>
                     <Image 
                         src={integration.logo}
                         alt={`${integration.name} logo`}
