@@ -1,5 +1,6 @@
 import { useChatCore } from "@/app/hooks/chat/useChatCore"
 import { useAuth } from "@clerk/nextjs"
+import { daysInWeek } from "date-fns/constants"
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
 
@@ -163,4 +164,47 @@ export function useMeetingDetails(){
         }
     }
 
+    const displayActionItems=localActionItems.length>0?localActionItems.map((item:any)=>({
+        id:item.id,
+        text:item.text
+    })):[]
+
+    const meetingInfoData=meetingData?{
+        title:meetingData.title,
+        date:new Date(meetingData.startTime).toLocaleDateString(),
+        time:`${new Date(meetingData.startTime).toLocaleTimeString()}-${new Date(meetingData.endTime).toLocaleTimeString()}`,
+        userName: meetingData.user?.name || "User"
+    }:{
+        title: "loading...",
+        date:"loading...",
+        time:"loading...",
+        userName:"loading..."
+    }
+    return {
+        meetingId,
+        isOwner,
+        userChecked,
+        activeTab,
+        setActiveTab,
+        localActionItems,
+        setLocalActionItems,
+        meetingData,
+        setMeetingData,
+        loading,
+        setLoading,
+        chatInput:chat.chatInput,
+        setChatInput: chat.setChatInput,
+        messages:chat.messages,
+        setMessages:chat.setMessages,
+        showSuggestions: chat.showSuggestions,
+        setShowSuggestions:chat.setShowSuggestions,
+        isLoading:chat.isLoading,
+        handleSendMessage,
+        handleSuggestionClick,
+        handleInputChange,
+        deleteActionItem,
+        addActionItem,
+        displayActionItems,
+        meetingInfoData
+    }
 }
